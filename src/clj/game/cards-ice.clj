@@ -242,6 +242,10 @@
                  :trace {:base 7 :msg "give the Runner 1 tag" :effect (effect (tag-runner :runner 1))}}]
     :strength-bonus (req (if (= (second (:zone card)) :rd) 3 0))}
 
+   "Gyri Labyrinth"
+   {:abilities [{:label "Reduce Runner's max hand size by 2 until your next turn"
+                 :effect (effect (lose :runner :max-hand-size 2))}]}
+
    "Hadrians Wall"
    {:advanceable :always
     :abilities [end-the-run]
