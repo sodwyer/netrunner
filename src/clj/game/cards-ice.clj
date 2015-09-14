@@ -243,8 +243,16 @@
     :strength-bonus (req (if (= (second (:zone card)) :rd) 3 0))}
 
    "Gyri Labyrinth"
-   {:abilities [{:label "Reduce Runner's max hand size by 2 until your next turn"
-                 :effect (effect (lose :runner :max-hand-size 2))}]}
+   {:events {:corp-turn-begins
+             :effect (effect (gain :runner :max-hand-size 2))}
+    :abilities [{:label "Reduce Runner's max hand size by 2 until your next turn"
+                 :effect (effect 
+                          (system-msg "reduces runner's max hand size by 2")
+                          (lose :runner :max-hand-size 2)
+                          (if (= (get card :gyri-fire-count) nil)
+                            (update! (assoc card :gyri-fire-count 1))
+                            (update! card :gyri-fire-count inc))                                
+                         ) }]}
 
    "Hadrians Wall"
    {:advanceable :always
