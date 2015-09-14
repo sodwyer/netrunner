@@ -244,15 +244,19 @@
 
    "Gyri Labyrinth"
    {:events {:corp-turn-begins
-             :effect (effect (gain :runner :max-hand-size 2))}
+             {:effect (effect 
+                       ((fn [] (if (not (= (get card :gyri-fire-count) nil))
+                                 (gain :runner :max-hand-size (* 2 (get card :gyri-fire-count)))))))}}
     :abilities [{:label "Reduce Runner's max hand size by 2 until your next turn"
                  :effect (effect 
                           (system-msg "reduces runner's max hand size by 2")
                           (lose :runner :max-hand-size 2)
-                          (if (= (get card :gyri-fire-count) nil)
-                            (update! (assoc card :gyri-fire-count 1))
-                            (update! card :gyri-fire-count inc))                                
-                         ) }]}
+                          ((fn [] 
+                             (if (= (get card :gyri-fire-count) nil)
+                               (update! (assoc card :gyri-fire-count 1))
+                               (update! card :gyri-fire-count inc)
+                               )                                
+                         ) ))}]}
 
    "Hadrians Wall"
    {:advanceable :always
